@@ -1,4 +1,5 @@
 # OpenWeather
+[![Elixir CI](https://github.com/luizfelipesp/open_weather/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/luizfelipesp/open_weather/actions/workflows/ci.yaml)
 
 To start your Phoenix server:
 
