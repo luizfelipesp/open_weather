@@ -9,11 +9,27 @@ on:
 permissions:
   contents: read
 
+env:
+  MIX_ENV: test
+
 jobs:
   build:
-
     name: Build and test
     runs-on: ubuntu-latest
+    container:
+      image: elixir:1.18
+
+    services:
+      postgres:
+        image: postgres:13
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v4
@@ -32,9 +48,6 @@ jobs:
     
     - name: Install dependencies
       run: mix deps.get
-    
-    - name: Run credo
-      run: mix credo --strict
 
     - name: Mix compile
       run: mix compile --warnings-as-errors
@@ -42,5 +55,11 @@ jobs:
     - name: Check format
       run: mix format --check-formatted
 
+    - name: Run credo
+      run: mix credo --strict
+
     - name: Run tests
       run: mix test
+      env:
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_HOST: postgres
