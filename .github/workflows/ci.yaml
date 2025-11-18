@@ -57,13 +57,6 @@ jobs:
           ${{ runner.os }}-mix-${{ env.cache-name }}-
           ${{ runner.os }}-mix-
 
-    - name: Clean to rule out incremental build as a source of issues
-      if: github.run_attempt != '1'
-      run: |
-        mix deps.clean --all
-        mix clean
-      shell: sh
-
     - name: Install dependencies
       run: mix deps.get
 
