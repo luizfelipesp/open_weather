@@ -6,19 +6,18 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  MIX_ENV: test
+
 permissions:
   contents: read
 
 jobs:
   build:
-    name: Build and test
-    runs-on: ubuntu-latest
-    container: elixir:1.19.3
-
     services:
-      postgres:
-        image: postgres:13
-        ports: ["5432:5432"]
+      db:
+        image: postgres:12
+        ports: ['5432:5432']
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -26,6 +25,9 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+    name: Build and test
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
