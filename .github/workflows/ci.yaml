@@ -57,6 +57,13 @@ jobs:
           ${{ runner.os }}-mix-${{ env.cache-name }}-
           ${{ runner.os }}-mix-
 
+    - name: Clean to rule out incremental build as a source of issues
+      if: github.run_attempt != '1'
+      run: |
+        mix deps.clean --all
+        mix clean
+      shell: sh
+
     - name: Install dependencies
       run: mix deps.get
 
@@ -66,12 +73,13 @@ jobs:
     - name: Check formatting
       run: mix format --check-formatted
 
+    - name: Run credo
+      run: mix credo --strict
+
     - name: Run tests
       run: mix test
       env:
         POSTGRES_PASSWORD: postgres
         POSTGRES_HOST: postgres
-    
-    - name: Run credo
-      run: mix credo --strict
+
 
