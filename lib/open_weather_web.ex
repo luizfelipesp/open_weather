@@ -88,8 +88,8 @@ defmodule OpenWeatherWeb do
       import OpenWeatherWeb.CoreComponents
 
       # Common modules used in templates
-      alias Phoenix.LiveView.JS
       alias OpenWeatherWeb.Layouts
+      alias Phoenix.LiveView.JS
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())
